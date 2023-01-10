@@ -1,5 +1,5 @@
 from socket import *
-from threading import *
+import threading as th
 
 clients = set()
 
@@ -21,7 +21,7 @@ def clientThread(clientSocket, clientAddress):
 hostSocket = socket(AF_INET, SOCK_STREAM)
 hostSocket.setsockopt(SOL_SOCKET, SO_REUSEADDR,1)
 
-hostIp = "127.0.0.1"
+hostIp = "10.194.65.87"
 portNumber = 7500
 hostSocket.bind((hostIp, portNumber))
 hostSocket.listen()
@@ -32,5 +32,6 @@ while True:
     clientSocket, clientAddress = hostSocket.accept()
     clients.add(clientSocket)
     print ("Connection established with: ", clientAddress[0] + ":" + str(clientAddress[1]))
-    thread = Thread(target=clientThread, args=(clientSocket, clientAddress, ))
+    print(clients)
+    thread = th.Thread(target=clientThread, args=(clientSocket, clientAddress, ))
     thread.start()
