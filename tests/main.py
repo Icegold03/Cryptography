@@ -31,8 +31,8 @@ class App(tk.Tk):
  
 
     def start_key_exchange(self):
-        ip_addres = self.connect_to_input.get()
-        if com.try_server(ip_addres):
+        ip_addres = str(self.connect_to_input.get())
+        if not com.try_server(ip_addres):
             com.make_server()
 
     def key_exchange_sucesfull(self):
