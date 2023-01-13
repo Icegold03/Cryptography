@@ -28,16 +28,21 @@ class App(tk.Tk):
 
         connect_btn = tk.Button(self, text='Connect', command=self.start_key_exchange)
         connect_btn.pack(side = 'bottom', pady=10)
- 
+
 
     def start_key_exchange(self):
         ip_addres = str(self.connect_to_input.get())
-        if not com.try_server(ip_addres):
-            com.make_server()
+        self.socket = com.try_server(ip_addres)
+        self.protocol("WM_DELETE_WINDOW", self.on_closing) 
+
+
 
     def key_exchange_sucesfull(self):
         self.status_text_var.set('you are now conneted')
 
+    def on_closing(self):
+        self.socket.close()
+        self.destroy()
 
 if __name__ == "__main__":
     app = App()

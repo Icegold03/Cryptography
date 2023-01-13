@@ -1,8 +1,6 @@
 import socket as s
 import threading as th
-
-socket = s.socket(s.AF_INET, s.SOCK_STREAM)
-socket.setsockopt(s.SOL_SOCKET, s.SO_REUSEADDR, 1)
+import com_class
 
 
 portNumber = 7500
@@ -11,48 +9,18 @@ pc_ip=str(s.gethostbyname(hostname))
 print(pc_ip)
 
 def try_server(ip):
+    client_socket = s.socket(s.AF_INET, s.SOCK_STREAM)
+    client_socket.setsockopt(s.SOL_SOCKET, s.SO_REUSEADDR, 1)
+
     try:
-        socket.connect((ip, portNumber))
+        client_socket.connect((ip, portNumber))
     except:
         print('no server was found')
-        socket = s.socket(s.AF_INET, s.SOCK_STREAM)
-        socket.setsockopt(s.SOL_SOCKET, s.SO_REUSEADDR, 1)
-        return False
+        return com_class.Server(pc_ip, portNumber)
+        
     else:
-        return True
-
-
-def make_server():
-    socket.bind((pc_ip, portNumber))
-    socket.listen()
-    clients = set()
-    print('server made')
-
-    def clientThread(clientSocket, clientAddress):
-        while True:
-            message = clientSocket.recv(1024).decode("utf-8")
-            print(clientAddress[0] + ":" + str(clientAddress[1]) +" says: "+ message)
-            for client in clients:
-                if client is not clientSocket:
-                    client.send((clientAddress[0] + ":" + str(clientAddress[1]) +" says: "+ message).encode("utf-8"))
-
-            if not message:
-                clients.remove(clientSocket)
-                print(clientAddress[0] + ":" + str(clientAddress[1]) +" disconnected")
-                break
-
-
-    while True:
-        clientSocket, clientAddress = socket.accept()
-        clients.add(clientSocket)
-        print ("Connection established with: ", clientAddress[0] + ":" + str(clientAddress[1]))
-        print(clients)
-        thread = th.Thread(target=clientThread, args=(clientSocket, clientAddress, ))
-        thread.start()
-
-
-
-
+        print('server found')
+        return com_class.Client(client_socket)        
 
 
 def send_public_agriments(g,p):
