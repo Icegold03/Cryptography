@@ -8,9 +8,15 @@ clients = set()
 def clientThread(clientSocket, clientAddress):
     while True:
         message = clientSocket.recv(16).decode("utf-8")
-        for client in clients:
-            if client is not clientSocket:
-                client.send( message.encode("utf-8") )
+        print(message)
+        if message == 'cl':
+            print('in if statment for respont on clients')
+            shf.send(clientSocket, str(len(clients)))
+            print('respont on clients send')
+        else:
+            for client in clients:
+                if client is not clientSocket:
+                    client.send( message.encode("utf-8") )
 
         if not message:
             clients.remove(clientSocket)
@@ -36,7 +42,8 @@ while True:
     clientSocket, clientAddress = hostSocket.accept()
     clients.add(clientSocket)
     print ("Connection established with: ", clientAddress[0] + ":" + str(clientAddress[1]))
-    shf.send(clientSocket, shf.add_header(str(g)))
-    shf.send(clientSocket, shf.add_header(str(p)))
-    #thread = th.Thread(target=clientThread, args=(clientSocket, clientAddress, ))
-    #thread.start()
+    print(str(len(clients)))
+    shf.send(clientSocket, str(g))
+    shf.send(clientSocket, str(p))
+    thread = th.Thread(target=clientThread, args=(clientSocket, clientAddress, ))
+    thread.start()

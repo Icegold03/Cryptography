@@ -7,7 +7,7 @@ def add_header(msg):
     returns: string'''
 
     hmsg = f'{len(msg):<{HEADERSIZE}}'+msg
-    print(hmsg)
+    #print(hmsg)
     return hmsg
 
 
@@ -15,8 +15,11 @@ def send(socket, msg):
     '''send a msg to socket
     socket: objekt
     msg: string'''
-    socket.send(bytes(msg,"utf-8"))
-    
+    socket.send(bytes(add_header(msg),"utf-8"))
+
+def number_of_clients(socket):
+    socket.send(bytes('cl',"utf-8"))
+    return int(recv(socket))
 
 def recv(socket):
     '''recives a msg with header from socket 

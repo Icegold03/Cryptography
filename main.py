@@ -38,18 +38,19 @@ class App(tk.Tk):
             return    
         self.protocol("WM_DELETE_WINDOW", self.on_closing) 
 
-        g, p = self.socket.recv_pup()
-
-        print(g,p)
+        g, p = self.socket.recv_param()
+        print('-g:',g)
+        print('-p:',p)
 
         s = randint(1,p-1)
+        print('-s:',s)
 
-        print(s)
+        A = pow(g, s, p)
+        print('-A:',A)
 
-        AB = pow(g, s, p)
-        print('AB DONE')
-        print(AB)
-
+        B = self.socket.send_mix(A)
+        print('swapt')
+        print('-B:',B)
 
     def key_exchange_sucesfull(self):
         self.status_text_var.set('you are now conneted')
