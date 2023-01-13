@@ -1,6 +1,7 @@
 import socket as s
 import threading as th
 import socket_help_fucs as shf
+from generate_parameters import parameters
 
 clients = set()
 
@@ -29,14 +30,13 @@ hostSocket.bind((hostIp, portNumber))
 hostSocket.listen()
 print ("Waiting for connection...")
 
-num1 = '1000000000000000000000000000000000000000000000000000000000000000'
-num2 = '2000000000000000000000000000000000000000000000000000000000000000'
+g, p = parameters()
 
 while True:
     clientSocket, clientAddress = hostSocket.accept()
     clients.add(clientSocket)
     print ("Connection established with: ", clientAddress[0] + ":" + str(clientAddress[1]))
-    shf.send(clientSocket, shf.add_header(str(num1)))
-    shf.send(clientSocket, shf.add_header(str(num2)))
+    shf.send(clientSocket, shf.add_header(str(g)))
+    shf.send(clientSocket, shf.add_header(str(p)))
     #thread = th.Thread(target=clientThread, args=(clientSocket, clientAddress, ))
     #thread.start()

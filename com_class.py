@@ -8,9 +8,9 @@ class Client():
 
 
     def recv_pup(self):
-        msg=shf.recv(self.client_socket)
-        #print(msg)
-        return msg
+        g=int(shf.recv(self.client_socket))
+        p=int(shf.recv(self.client_socket))
+        return g, p
 
     def close(self):
         self.client_socket.shutdown(s.SHUT_RDWR)

@@ -1,5 +1,6 @@
 import tkinter as tk
 import com
+from random import randint
 
 
 class App(tk.Tk):
@@ -27,7 +28,7 @@ class App(tk.Tk):
         ip_input_frame.pack()
 
         connect_btn = tk.Button(self, text='Connect', command=self.start_key_exchange)
-        connect_btn.pack(side = 'bottom', pady=10)
+        connect_btn.pack(side = 'bottom', pady=10) 
 
 
     def start_key_exchange(self):
@@ -36,10 +37,18 @@ class App(tk.Tk):
         if self.socket == None:
             return    
         self.protocol("WM_DELETE_WINDOW", self.on_closing) 
-        g = self.socket.recv_pup()
-        p = self.socket.recv_pup()
-        print(g, p)
 
+        g, p = self.socket.recv_pup()
+
+        print(g,p)
+
+        s = randint(1,p-1)
+
+        print(s)
+
+        AB = pow(g, s, p)
+        print('AB DONE')
+        print(AB)
 
 
     def key_exchange_sucesfull(self):
