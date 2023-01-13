@@ -21,7 +21,7 @@ class Client():
             sleep(5)
 
         shf.send(self.client_socket, str(A))
-        return shf.recv(self.client_socket)
+        return int(shf.recv(self.client_socket))
 
     
 

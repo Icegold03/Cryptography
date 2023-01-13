@@ -52,6 +52,10 @@ class App(tk.Tk):
         print('swapt')
         print('-B:',B)
 
+        S = pow(B, s, p)
+        print('-S:',S)
+        print('YOU WIN')
+
     def key_exchange_sucesfull(self):
         self.status_text_var.set('you are now conneted')
 
