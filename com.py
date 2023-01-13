@@ -23,13 +23,8 @@ def try_server(ip):
         return com_class.Client(client_socket)        
 
 
-def send_public_agriments(g,p):
-    pass
 
-def resive_public_argriments():
-    pass
-
-def send_mix(T):
+def send_mix(AB):
     pass
 
 def recive_mix():

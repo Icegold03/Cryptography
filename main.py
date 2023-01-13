@@ -21,7 +21,7 @@ class App(tk.Tk):
         ip_input_frame = tk.Frame(self)
         connect_to_lable = tk.Label(ip_input_frame, text='Connect to')
         self.connect_to_input = tk.Entry(ip_input_frame)
-        self.connect_to_input.insert(0, '10.194.65.87')
+        self.connect_to_input.insert(0, '192.168.1.231')
         connect_to_lable.grid(row=0, column=0)
         self.connect_to_input.grid(row=0, column=1)
         ip_input_frame.pack()
@@ -36,6 +36,9 @@ class App(tk.Tk):
         if self.socket == None:
             return    
         self.protocol("WM_DELETE_WINDOW", self.on_closing) 
+        g = self.socket.recv_pup()
+        p = self.socket.recv_pup()
+        print(g, p)
 
 
 
