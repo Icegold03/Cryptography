@@ -1,4 +1,4 @@
-from socket import *
+import socket as s
 import threading as th
 
 clients = set()
@@ -18,10 +18,12 @@ def clientThread(clientSocket, clientAddress):
 
     clientSocket.close()
 
-hostSocket = socket(AF_INET, SOCK_STREAM)
-hostSocket.setsockopt(SOL_SOCKET, SO_REUSEADDR,1)
+hostSocket = s.socket(s.AF_INET, s.SOCK_STREAM)
+hostSocket.setsockopt(s.SOL_SOCKET, s.SO_REUSEADDR,1)
 
-hostIp = "10.194.65.87"
+hostIp=str(s.gethostbyname(s.gethostname() )) 
+print(hostIp)
+
 portNumber = 7500
 hostSocket.bind((hostIp, portNumber))
 hostSocket.listen()
