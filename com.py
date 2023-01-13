@@ -16,7 +16,7 @@ def try_server(ip):
         client_socket.connect((ip, portNumber))
     except:
         print('no server was found')
-        return com_class.Server(pc_ip, portNumber)
+        return None
         
     else:
         print('server found')

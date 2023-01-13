@@ -33,6 +33,8 @@ class App(tk.Tk):
     def start_key_exchange(self):
         ip_addres = str(self.connect_to_input.get())
         self.socket = com.try_server(ip_addres)
+        if self.socket == None:
+            return    
         self.protocol("WM_DELETE_WINDOW", self.on_closing) 
 
 
