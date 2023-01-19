@@ -21,10 +21,10 @@ class Client():
         Once the number of clients is more than 1, it sends A to the server and receives B.
         """
         number_of_clients = 1
+
         while number_of_clients <2:
             number_of_clients = shf.number_of_clients(self.client_socket)
-            print('number_of_clients:', number_of_clients)
-            sleep(5)
+            sleep(2)
 
         shf.send(self.client_socket, str(A))
         return int(shf.recv(self.client_socket))

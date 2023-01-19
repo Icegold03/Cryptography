@@ -9,7 +9,7 @@ class App(tk.Tk):
 
         # root settings
         self.title('Diffie-Hellman key exchange')
-        self.geometry('300x150')
+        self.geometry('300x350')
 
         # header
         header = tk.Label(
@@ -19,9 +19,9 @@ class App(tk.Tk):
         # status text
         self.status_text_var = tk.StringVar()
         self.status_text_var.set('you are not connected')
-        status = tk.Label(self, textvariable=self.status_text_var,
-                          font=('Times New Roman', 15))
-        status.pack()
+        self.status = tk.Label(self, textvariable=self.status_text_var,
+                               font=('Times New Roman', 15))
+        self.status.pack()
 
         # ip addres input
         ip_input_frame = tk.Frame(self)
@@ -40,6 +40,8 @@ class App(tk.Tk):
     def start_key_exchange(self):
         '''is called when the connect button get pushed. This function is responseble for making the key exchange '''
 
+        print("---- Diffie Hellman key excange started ----")
+        print("Trying to connect to server")
         # trys to connect to the a server with the ip addres from er entry
         ip_addres = str(self.ip_entry.get())
         self.socket = com.try_server(ip_addres)
@@ -47,43 +49,55 @@ class App(tk.Tk):
         # if no server was found, it returns
         if self.socket == None:
             self.status_text_var.set('no server found')
+            print(f"No server found at IP: {ip_addres}")
             return
 
         # when closing the tkinter window, call on_closing to close the serer connection
         self.protocol("WM_DELETE_WINDOW", self.on_closing)
 
-        # recive DH parameters from server
-        g, p = self.socket.recv_param()
-        print('-g:', g)
-        print('-p:', p)
+        print('server was found \n', )
 
+        # recive DH parameters from server
+        print("Reciving parameters:")
+        g, p = self.socket.recv_param()
+        print(print_format("g", g))
+        print(print_format("p", p))
+
+        print("calculating:")
         # generate random private number
         s = randint(1, p-1)
-        print('-s:', s)
+        print(print_format("s", s))
 
         # take g to the power of s mod p
         A = pow(g, s, p)
-        print('-A:', A)
+        print(print_format("A", A))
 
         # Swap A with the other persen to get B
-        self.status_text_var.set('wating for swap')
+        print("trying to swap")
         B = self.socket.send_mix(A)
         print('swapt')
-        print('-B:', B)
+        print(print_format("B", B))
 
         # generate shared secret key
         # take B to the power of s mod p
+        print("Shared key:")
         S = pow(B, s, p)
-        print('-S:', S)
-        print('YOU WIN')
-        self.key_exchange_sucesfull()
 
-    def key_exchange_sucesfull(self):
-        self.status_text_var.set('you are now conneted')
+        print(print_format("S", S))
+        print('---- Key exchange successful ----')
+        self.status_text_var.set('Key exchange successful')
+
+        self.kye_lable = tk.Label(self, text=f"Your shared key is: \n{S}", wraplength=180, justify="left")
+        self.kye_lable.pack()
 
     def on_closing(self):
         self.socket.close()
         self.destroy()
+
+
+def print_format(name: str, number: int) -> str:
+    n = str(number)
+    return f'-{name} (l: {len(n)}): {n[:5]}'
 
 
 if __name__ == "__main__":
