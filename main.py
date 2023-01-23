@@ -9,7 +9,7 @@ class App(tk.Tk):
 
         # root settings
         self.title('Diffie-Hellman key exchange')
-        self.geometry('300x350')
+        self.geometry('300x250')
 
         # header
         header = tk.Label(
@@ -41,8 +41,9 @@ class App(tk.Tk):
         '''is called when the connect button get pushed. This function is responseble for making the key exchange '''
 
         print("---- Diffie Hellman key excange started ----")
-        print("Trying to connect to server")
+
         # trys to connect to the a server with the ip addres from er entry
+        print("Trying to connect to server")
         ip_addres = str(self.ip_entry.get())
         self.socket = com.try_server(ip_addres)
 
@@ -51,11 +52,10 @@ class App(tk.Tk):
             self.status_text_var.set('no server found')
             print(f"No server found at IP: {ip_addres}")
             return
-
-        # when closing the tkinter window, call on_closing to close the serer connection
-        self.protocol("WM_DELETE_WINDOW", self.on_closing)
-
         print('server was found \n', )
+
+        # when closing the tkinter window, call on_closing to close the sever connection
+        self.protocol("WM_DELETE_WINDOW", self.on_closing)
 
         # recive DH parameters from server
         print("Reciving parameters:")
@@ -63,8 +63,8 @@ class App(tk.Tk):
         print(print_format("g", g))
         print(print_format("p", p))
 
-        print("calculating:")
         # generate random private number
+        print("calculating:")
         s = randint(1, p-1)
         print(print_format("s", s))
 
@@ -82,12 +82,13 @@ class App(tk.Tk):
         # take B to the power of s mod p
         print("Shared key:")
         S = pow(B, s, p)
-
         print(print_format("S", S))
+
         print('---- Key exchange successful ----')
         self.status_text_var.set('Key exchange successful')
 
-        self.kye_lable = tk.Label(self, text=f"Your shared key is: \n{S}", wraplength=180, justify="left")
+        self.kye_lable = tk.Label(
+            self, text=f"Your shared key is: \n{S}", wraplength=180, justify="left")
         self.kye_lable.pack()
 
     def on_closing(self):
@@ -97,7 +98,7 @@ class App(tk.Tk):
 
 def print_format(name: str, number: int) -> str:
     n = str(number)
-    return f'-{name} (l: {len(n)}): {n[:5]}'
+    return f'-{name} (l: {len(n)}): {n[:5]}...'
 
 
 if __name__ == "__main__":

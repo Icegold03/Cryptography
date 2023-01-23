@@ -57,15 +57,11 @@ def clientThread(clientSocket: s.socket, clientAddress: tuple):
     and broadcast it to all connected clients, except the sender. It also handles removing disconnected clients 
     from the clients set and closing the client socket.
 
-    Parameters:
-    clientSocket (s.socket): The socket object for the client.
-    clientAddress (tuple / _RetAddress): The address of the client in the form (IP address, port number).
     """
     while True:
         message = clientSocket.recv(16).decode("utf-8")
         print(message)
         if message == 'cl':
-            print('in if statment for respont on clients')
             shf.send(clientSocket, str(len(clients)))
             print('respont on clients send')
         else:
